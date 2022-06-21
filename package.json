@@ -1,0 +1,18 @@
+{
+  "name": "exposuredao",
+  "version": "1.0.0",
+  "description": "Dao for creatives and talents exposure/funding",
+  "main": "index.js",
+  "repository": "https://github.com/peteruche21/EncodeProject",
+  "author": "peso roman andrea otolol",
+  "license": "MIT",
+  "private": true,
+  "workspaces": [
+    "frontend",
+    "backend",
+    "smart-contracts"
+  ],
+  "scripts": {
+    "hardhat": "yarn workspace smart-contracts hardhat"
+  }
+}

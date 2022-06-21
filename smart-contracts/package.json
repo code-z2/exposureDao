@@ -1,0 +1,9 @@
+{
+  "name": "smart-contracts",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {},
+  "devDependencies": {
+    "hardhat": "^2.9.9"
+  }
+}
