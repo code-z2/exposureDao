@@ -5,12 +5,22 @@ interface IERC721Votes {
     function getPastVotes(address, uint256) external view returns (uint256);
 }
 
-contract Funding {
-    event Voted(
-        address indexed voter,
-        uint256 indexed project,
-        uint256 weight,
-        uint256 proposalVotes
+interface IERC20 {
+
+    function balanceOf(address account) external view returns (uint256);
+
+    function transferFrom(
+        address from,
+        address to,
+        uint256 amount
+    ) external returns (bool);
+}
+
+contract Crowdfunding {
+
+    event Funded(
+        address indexed funder,
+        uint256 amount    
     );
 
     struct Project {
@@ -22,7 +32,10 @@ contract Funding {
 
     Project[] public projects;
     IERC721Votes public voteToken;
+    //IERC20 public fundToken;
     uint256 public referenceBlock;
+    uint256 capital;
+    mapping(address => uint256) public capitals;
 
     constructor(
         bytes32[] memory proposalNames,
@@ -35,7 +48,20 @@ contract Funding {
         referenceBlock = block.number;
     }
 
-     function vote(uint256 project, uint256 amount) external {
+    function fund(uint256 amount) external payable { 
+        require(msg.value >= amount, "Has not enough money");
+        capital += msg.value;
+        emit Funded(msg.sender, amount);
+    }
+
+    function fundERC20(address fundToken, uint256 amount) external payable { 
+        require( IERC20(fundToken).balanceOf(msg.sender) >= amount, "Has not enough money");
+        IERC20(fundToken).transferFrom(msg.sender, address(this), amount);
+        capitals[fundToken] += amount;
+        emit Funded(msg.sender, amount);
+    }
+
+    function vote(uint256 project, uint256 amount) external {
         uint256 votingPowerAvailable = votingPower(); 
         require(votingPowerAvailable >= amount, "Has not enough voting power");
         spentVotePower[msg.sender] += amount;

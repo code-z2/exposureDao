@@ -9,6 +9,8 @@ interface IERC20 {
 
     function balanceOf(address account) external view returns (uint256);
 
+    function transfer(address to, uint256 amount) external returns (bool);
+
     function transferFrom(
         address from,
         address to,
@@ -32,25 +34,31 @@ contract Funding {
     struct Project {
         bytes32 name;
         uint256 voteCount;
+        address projectAddress;
     }
 
     mapping(address => uint256) public spentVotePower;
 
     Project[] public projects;
     IERC721Votes public voteToken;
-    //IERC20 public fundToken;
     uint256 public referenceBlock;
-    uint256 public capital;
+    uint256 public endBlock;
+    uint256 capital;
+    mapping(address => uint256) public capitals;
+
 
     constructor(
-        bytes32[] memory proposalNames,
-        address _voteToken
+        bytes32[] memory projectNames,
+        address[] memory projectAddress,
+        address _voteToken,
+        uint256 duration
     ) {
-        for (uint256 i = 0; i < proposalNames.length; i++) {
-            projects.push(Project({name: proposalNames[i], voteCount: 0}));
+        for (uint256 i = 0; i < projectNames.length; i++) {
+            projects.push(Project({name: projectNames[i], voteCount: 0, projectAddress: projectAddress[i]}));
         }
         voteToken = IERC721Votes(_voteToken);
         referenceBlock = block.number;
+        endBlock = block.number + duration;
     }
 
     function fund(uint256 amount) external payable { 
@@ -62,8 +70,14 @@ contract Funding {
     function fundERC20(address fundToken, uint256 amount) external payable { 
         require( IERC20(fundToken).balanceOf(msg.sender) >= amount, "Has not enough money");
         IERC20(fundToken).transferFrom(msg.sender, address(this), amount);
-        capital += msg.value;
+        capitals[fundToken] += amount;
         emit Funded(msg.sender, amount);
+    }
+
+    function withdrawWinner(address tokenAddress) external { 
+        require(block.number >= endBlock, "funding is still in progress" );
+        IERC20(tokenAddress).transfer(projects[winningProposal()].projectAddress, capitals[tokenAddress]);
+        capitals[tokenAddress] = 0;
     }
 
     function vote(uint256 project, uint256 amount) external {
