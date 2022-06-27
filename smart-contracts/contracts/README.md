@@ -1,6 +1,8 @@
 # EncodeProject
 
+ERC20 voting tokens are written in the contract Token.sol
 
+ERC721 voting tokens are written in the contract ENFT.sol
 
 # Phase1
 Join forum and create proposal.
