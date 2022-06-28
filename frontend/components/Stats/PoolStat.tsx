@@ -14,7 +14,7 @@ const PoolStat: FC = () => {
       value: "202",
     },
     {
-      title: "Active Applicants",
+      title: "Active Participants",
       value: "121",
     },
     {
@@ -22,7 +22,7 @@ const PoolStat: FC = () => {
       value: "12003",
     },
     {
-      title: "Total Applicants",
+      title: "Total Participants",
       value: "5642",
     },
   ];
