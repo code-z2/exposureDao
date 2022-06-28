@@ -1,6 +1,5 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import Modal from "../components/Modal";
 import Publication from "../components/Publications";
 import Search from "../components/Search";
 import PoolStat from "../components/Stats/PoolStat";
