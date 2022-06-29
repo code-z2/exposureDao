@@ -17,9 +17,9 @@ const App: React.FC = () => {
     setLoading(true)
     uauth
       .user()
-      .then(setUser)
-      .catch(console.error)
-      .finally(() => setLoading(false))
+      </div>
+    </div>
+  </nav>
   }, [])
 
   // Login with a popup and save the user
