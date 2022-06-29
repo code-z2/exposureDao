@@ -1,6 +1,6 @@
 # EncodeProject
 
-ERC20 voting tokens are written in the contract Token.sol for participation CustomBallot.sol
+ERC20 voting tokens are written in the contract Token.sol for participation CustomBallot.sol (and GovernorContract.sol)
 
 ERC721 voting tokens are written in the contract ENFT.sol for participation Funding.sol
 

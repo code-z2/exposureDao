@@ -6,6 +6,7 @@
   "license": "MIT",
   "private": true,
   "dependencies": {
+    "@openzeppelin/contracts": "^4.6.0",
     "@types/mocha": "^9.1.1",
     "@uniswap/v3-periphery": "^1.4.1",
     "chai": "^4.3.6",
