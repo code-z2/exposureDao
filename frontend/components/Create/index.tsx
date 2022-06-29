@@ -8,13 +8,13 @@ const CreateProject = () => {
           htmlFor="project_name"
           className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
         >
-          Project Name
+          Name
         </label>
         <input
           type="text"
           id="project_name"
           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500"
-          placeholder="Encode Club"
+          placeholder="name"
           required
         />
       </div>
@@ -29,7 +29,7 @@ const CreateProject = () => {
           type="email"
           id="email"
           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500"
-          placeholder="contact@company.com"
+          placeholder="contact@mail.com"
           required
         />
       </div>
@@ -38,14 +38,13 @@ const CreateProject = () => {
           htmlFor="url"
           className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
         >
-          Project Url
+          Website Url
         </label>
         <input
           type="text"
           id="project_name"
           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500"
-          placeholder="www.awesomeproject.com"
-          required
+          placeholder="www.###.com"
         />
       </div>
       <div>
@@ -59,7 +58,7 @@ const CreateProject = () => {
           id="description"
           rows={5}
           className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-teal-500 focus:border-teal-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500"
-          placeholder="Please thoroughly describe your project and its working mechanics, add every usefull information that you can ..."
+          placeholder="Please add every usefull information that you can ..."
         ></textarea>
       </div>
       <div>
