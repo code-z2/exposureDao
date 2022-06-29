@@ -1,5 +1,5 @@
-//SPDX-License-Identifier: Unlicense
-pragma solidity 0.8.14;
+// SPDX-License-Identifier: GPL-3.0
+pragma solidity >=0.7.0 <0.9.0;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
@@ -74,3 +74,7 @@ contract EncodeNFT is ERC721, ERC721URIStorage, ERC721Burnable, AccessControl, E
     fallback() external payable {}
     receive() external payable {}
 }
+
+//Owner 0xa1d0E5A80cbCD4e93e4D3595a93796188754a8CB
+//ADDR 0x25b3bebb5edcfac6d412319beddd8f04b55a9346
+//tx 0x869b1d9542be8668602a494c77fa266fe6b283c583588d37cd78245e892747a2
