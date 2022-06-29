@@ -1,29 +1,47 @@
 import React, { FC, PropsWithChildren, useState } from "react";
 
 type ModalProps = PropsWithChildren<{
+  create: boolean;
   label: string;
   title?: string;
 }>;
 
-const Modal: FC<ModalProps> = ({ label, title, children }) => {
+const Modal: FC<ModalProps> = ({ create = false, label, title, children }) => {
   const [showModal, setShowModal] = useState(false);
   return (
     <div>
       <button
-        className="block text-white bg-teal-700 hover:bg-teal-800 focus:ring-4 focus:outline-none focus:ring-teal-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-teal-600 dark:hover:bg-teal-700 dark:focus:ring-teal-800"
         type="button"
         onClick={() => setShowModal(!showModal)}
+        className="text-white bg-teal-700 hover:bg-teal-800 focus:ring-4 focus:outline-none focus:ring-teal-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center mr-2 dark:bg-teal-600 dark:hover:bg-teal-700 dark:focus:ring-teal-800"
       >
+        {create ? (
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-5 w-5 mr-2 -ml-1"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+          >
+            <path
+              fillRule="evenodd"
+              d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
+              clipRule="evenodd"
+            />
+          </svg>
+        ) : (
+          <></>
+        )}
         {label}
       </button>
+
       {showModal ? (
         <div
           tabIndex={-1}
           aria-hidden="true"
-          className="overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 w-full md:inset-0 h-modal md:h-full flex justify-center items-center"
+          className="overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 w-full md:inset-0 h-modal md:h-full flex justify-center items-center bg-gray-800 bg-opacity-50"
         >
           <div className="relative p-4 w-full max-w-2xl h-full md:h-auto">
-            <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
+            <div className="relative bg-white rounded-lg shadow dark:bg-gray-700 overflow-y-auto max-h-[80vh]">
               <div className="flex justify-between items-start p-4 rounded-t border-b dark:border-gray-600">
                 <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
                   {title}

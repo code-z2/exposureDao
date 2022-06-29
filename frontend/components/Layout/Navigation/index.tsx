@@ -2,7 +2,7 @@ import React, { FC } from "react";
 
 const Navigation: FC = () => {
   return (
-    <div className="w-full h-[35px]">
+    <div className="w-full h-[50px]">
       <section
         id="bottom-navigation"
         className="md:hidden block fixed inset-x-0 bottom-0 z-10 bg-gray-100 dark:bg-gray-700 shadow rounded-lg"
@@ -44,7 +44,7 @@ const Navigation: FC = () => {
             </svg>
             <span className="tab tab-kategori block text-xs">Top Projects</span>
           </a>
-          <a
+          {/* <a
             href="#"
             className="w-full text-gray-800 dark:text-teal-500 dark:focus:text-white focus:text-teal-600 hover:text-teal-600 justify-center inline-block text-center pt-2 pb-1"
           >
@@ -61,7 +61,7 @@ const Navigation: FC = () => {
               />
             </svg>
             <span className="tab tab-explore block text-xs">Vote</span>
-          </a>
+          </a> */}
         </div>
       </section>
     </div>

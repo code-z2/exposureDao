@@ -15,23 +15,29 @@ const Publication: FC = () => {
           0xSomething.crypto
         </a>
       </div>
-      <div className="w-[500px] m-auto">
+      <div className="max-w-[500px] m-auto">
         <img src="/football.jpg" />
       </div>
       <div className="flex justify-end items-center mt-4">
-        <a
-          href="#"
-          className="text-sm font-medium text-teal-600 hover:underline dark:text-teal-500"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-5 w-5"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-          >
-            <path d="M11 3a1 1 0 10-2 0v1a1 1 0 102 0V3zM15.657 5.757a1 1 0 00-1.414-1.414l-.707.707a1 1 0 001.414 1.414l.707-.707zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zM5.05 6.464A1 1 0 106.464 5.05l-.707-.707a1 1 0 00-1.414 1.414l.707.707zM5 10a1 1 0 01-1 1H3a1 1 0 110-2h1a1 1 0 011 1zM8 16v-1h4v1a2 2 0 11-4 0zM12 14c.015-.34.208-.646.477-.859a4 4 0 10-4.954 0c.27.213.462.519.476.859h4.002z" />
-          </svg>
-        </a>
+        <button className="text-sm font-medium text-teal-600 dark:text-teal-500">
+          <span className="inline-flex justify-center items-center p-2 ml-3 text-sm font-medium bg-gray-200 rounded-full dark:bg-gray-700">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fillRule="evenodd"
+                d="M18 3a1 1 0 00-1.447-.894L8.763 6H5a3 3 0 000 6h.28l1.771 5.316A1 1 0 008 18h1a1 1 0 001-1v-4.382l6.553 3.276A1 1 0 0018 15V3z"
+                clipRule="evenodd"
+              />
+            </svg>
+            <span className="inline-flex justify-center items-center px-2 ml-3 text-sm font-medium text-gray-800 bg-gray-200 rounded-full dark:bg-gray-700 dark:text-gray-300">
+              250
+            </span>
+          </span>
+        </button>
       </div>
     </Card>
   );
