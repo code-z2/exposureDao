@@ -1,8 +1,8 @@
 import React, { FC, useState } from "react";
 
 const ProgressRing: FC = () => {
-  const circumference = 30 * 2 * Math.PI;
-  const [days, setDays] = useState(5);
+  const circumference = 40 * 2 * Math.PI;
+  const [days, setDays] = useState(0);
   return (
     <div className=" inline-flex items-center justify-center overflow-hidden rounded-full">
       <svg className="w-20 h-20">

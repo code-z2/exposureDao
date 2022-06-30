@@ -1,48 +1,64 @@
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import Card from "../Card";
 import Details from "./Details";
 import Discussion from "./Discussion";
+import init from "../../lib/ethers";
+import { Contract, ethers } from "ethers";
+import { formatAddress } from "../../utils";
+
+const readJSON = async (uri: string) => {
+  try {
+    const response = await fetch(uri);
+    const responseJson = await response.json();
+    return responseJson;
+  } catch (error) {
+    console.error(error);
+  }
+};
 
 const Publication: FC = () => {
-  const testProjectData = [
-    {
-      owner: "0xbfff...ffff",
-      projectId: 245,
-      title: "Frst Breweries Coffee Company",
-      email: "test@gmail.com",
-      url: "https://test.com",
-      description:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Rerum atque quo alias modi consectetur voluptatibus sint quis similique nesciunt eius neque necessitatibus eveniet amet, repellendus voluptatem sapiente architecto optio labore. Lorem ipsum dolor sit amet consectetur adipisicing elit. Rerum atque quo alias modi consectetur voluptatibus sint quis similique nesciunt eius neque necessitatibus eveniet amet, repellendus voluptatem sapiente architecto optio labore.",
-      images: ["/football.jpg"],
-      socials: {
-        twitter: "test",
-        instagram: "john",
-        linkedin: "live",
-        discord: "",
-      },
-      promotions: 58,
-    },
-    {
-      owner: "0xbfff...ffff",
-      projectId: 245,
-      title: "Encode",
-      email: "test@gmail.com",
-      url: "https://test.com",
-      description:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Rerum atque quo alias modi consectetur voluptatibus sint quis similique nesciunt eius neque necessitatibus eveniet amet, repellendus voluptatem sapiente architecto optio labore.",
-      images: ["/football.jpg"],
-      socials: {
-        twitter: "please",
-        instagram: "",
-        linkedin: "",
-        discord: "yest",
-      },
-      promotions: 584,
-    },
-  ];
+  const [data, setData] = useState<{}[]>([]);
+
+  useEffect(() => {
+    if (window.ethereum) {
+      const { signer, contract } = init();
+      fetchProjects(contract);
+    }
+  }, []);
+
+  const fetchProjects = async (contract: Contract) => {
+    const projects = await contract!.getAllProjects();
+    const memo: {}[] = [];
+    const reduceResult = () => {
+      const result = projects.reduce(
+        async (arr: {}[], project: { [key: string]: string }) => {
+          const destructuredUri = await readJSON(project.uri);
+          console.log(Array.isArray(memo));
+          memo.push({
+            name: project.name,
+            title: ethers.utils.parseBytes32String(project.name),
+            owner: formatAddress(project.projectAddress),
+            promotions: project.voteCount.toString(),
+            url: destructuredUri.url,
+            description: destructuredUri.description,
+            images: destructuredUri.images,
+            email: destructuredUri.email,
+            socials: destructuredUri.socials,
+          });
+          return memo;
+        },
+        []
+      );
+      console.log(memo);
+      return result;
+    };
+    const d = await reduceResult();
+    setData(d);
+  };
+
   return (
     <>
-      {testProjectData.map((el, index) => (
+      {data.map((el, index) => (
         <div key={index}>
           <Card>
             <div
@@ -70,7 +86,7 @@ const Publication: FC = () => {
                 <img src={img} />
               </div>
             ))}
-            <Discussion promotions={el.promotions} />
+            <Discussion promotions={el.promotions} name={el.name} />
           </Card>
         </div>
       ))}

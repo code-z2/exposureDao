@@ -1,11 +1,27 @@
-import React, { FC, useState } from "react";
+import React, { FC, useState, useEffect } from "react";
+import { Contract, ethers } from "ethers";
+import { formatAddress } from "../../utils";
+import init from "../../lib/ethers";
 
 interface IDiscussionProps {
   promotions: number;
+  name: any;
 }
 
-const Discussion: FC<IDiscussionProps> = ({ promotions }) => {
+const Discussion: FC<IDiscussionProps> = ({ promotions, name }) => {
   const [showDiscussion, setShowDiscussion] = useState(false);
+  const [contractInstance, setContractInstance] = useState<Contract>();
+
+  useEffect(() => {
+    if (window.ethereum) {
+      const { signer, contract } = init();
+      setContractInstance(contract);
+    }
+  }, []);
+
+  const promote = async () => {
+    await contractInstance!.vote(name);
+  };
 
   return (
     <div>
@@ -19,7 +35,7 @@ const Discussion: FC<IDiscussionProps> = ({ promotions }) => {
         </button>
         <button
           className=" inline-flex p-2 justify-center items-center text-sm font-medium text-teal-600 dark:text-teal-500 focus:ring-gray-200 dark:focus:ring-gray-400  bg-gray-200 rounded-full dark:bg-gray-700"
-          onClick={() => console.log("clicked on promotion")}
+          onClick={promote}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

@@ -1,29 +1,50 @@
-import React, { FC } from "react";
+import React, { FC, useEffect, useState } from "react";
 import Card from "../Card";
 import FundButton from "../Fund/Button";
 import ProgressRing from "./ProgressRing";
+import init from "../../lib/ethers";
+import { Contract, ethers } from "ethers";
 
 const PoolStat: FC = () => {
+  const [pool, setPool] = useState("");
+  const [participant, setParticipant] = useState("");
+  const [projects, setProjects] = useState("");
+
+  const updateRecords = async (contract: Contract) => {
+    let poolData = await contract.pool();
+    let projectsData = await contract.getAllProjects();
+    let participants = await contract.totalParticipants();
+    setPool(ethers.utils.formatEther(poolData));
+    setParticipant(participants.toString());
+    setProjects(projectsData.length);
+  };
+  useEffect(() => {
+    if (window.ethereum) {
+      const { signer, contract } = init();
+      updateRecords(contract);
+    }
+  }, []);
+
   const dummyData = [
     {
       title: "Pool Value",
-      value: "$1.1m",
+      value: `eth-${pool}`,
     },
     {
       title: "Projects",
-      value: "202",
+      value: projects,
     },
     {
       title: "Active Participants",
-      value: "121",
+      value: participant,
     },
     {
       title: "Total Projects",
-      value: "12003",
+      value: projects,
     },
     {
       title: "Total Participants",
-      value: "5642",
+      value: participant,
     },
   ];
   const renderList = (): JSX.Element[] => {

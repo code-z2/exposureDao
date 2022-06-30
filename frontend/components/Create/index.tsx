@@ -1,6 +1,65 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import store from "../../lib/ipfs";
+import init from "../../lib/ethers";
+import { Contract, ethers } from "ethers";
 
 const CreateProject = () => {
+  const [file, setFile] = useState<File>(undefined!);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [url, setUrl] = useState("");
+  const [description, setDescription] = useState("");
+  const [twitter, setTwitter] = useState("");
+  const [instagram, setInstagram] = useState("");
+  const [linkedIn, setLinkedIn] = useState("");
+  const [discord, setDiscord] = useState("");
+  const [contractInstance, setContractInstance] = useState<Contract>();
+
+  const uploadImage = async () => {
+    const { cid, uri, info } = await store(file);
+    return uri;
+  };
+  const create = async (e) => {
+    e.preventDefault();
+    const image = await uploadImage();
+    const data = {
+      name: name,
+      email: email,
+      url: url,
+      description: description,
+      images: [image],
+      socials: {
+        twitter: twitter,
+        instagram: instagram,
+        linkedin: linkedIn,
+        discord: discord,
+      },
+    };
+    const file = new File(
+      [JSON.stringify(data)],
+      `${name.replace(" ", "")}.json`,
+      {
+        type: "application/json",
+      }
+    );
+    const { cid, uri, info } = await store(file);
+    console.log(cid, uri, info);
+    let tx = await contractInstance!.createProject(
+      ethers.utils.formatBytes32String(name),
+      uri
+    );
+    const reciept = await tx.wait();
+    console.log("created!", reciept.status);
+    window.location.reload();
+  };
+
+  useEffect(() => {
+    if (window.ethereum) {
+      const { signer, contract } = init();
+      setContractInstance(contract);
+    }
+  }, []);
+
   return (
     <form className="space-y-4 p-4">
       <div>
@@ -16,6 +75,7 @@ const CreateProject = () => {
           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500"
           placeholder="name"
           required
+          onChange={(e) => setName(e.currentTarget.value)}
         />
       </div>
       <div>
@@ -31,6 +91,7 @@ const CreateProject = () => {
           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500"
           placeholder="contact@mail.com"
           required
+          onChange={(e) => setEmail(e.currentTarget.value)}
         />
       </div>
       <div>
@@ -45,6 +106,7 @@ const CreateProject = () => {
           id="project_name"
           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500"
           placeholder="www.###.com"
+          onChange={(e) => setUrl(e.currentTarget.value)}
         />
       </div>
       <div>
@@ -59,6 +121,8 @@ const CreateProject = () => {
           rows={5}
           className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-teal-500 focus:border-teal-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500"
           placeholder="Please add every usefull information that you can ..."
+          required
+          onChange={(e) => setDescription(e.currentTarget.value)}
         ></textarea>
       </div>
       <div>
@@ -73,6 +137,8 @@ const CreateProject = () => {
           id="multiple_files"
           type="file"
           multiple
+          onChange={(e) => setFile(e.target.files![0])}
+          required
         />
       </div>
       <div>
@@ -97,7 +163,7 @@ const CreateProject = () => {
               id="twitter"
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block max-w-[100px] p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500"
               placeholder="twitter"
-              required
+              onChange={(e) => setTwitter(e.currentTarget.value)}
             />
           </div>
           <div className="inline-flex items-center h-5 gap-2 text-red-400">
@@ -114,7 +180,7 @@ const CreateProject = () => {
               id="instagram"
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block max-w-[100px] p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500"
               placeholder="instagram"
-              required
+              onChange={(e) => setInstagram(e.currentTarget.value)}
             />
           </div>
           <div className="inline-flex items-center h-5 gap-2 text-blue-500">
@@ -131,7 +197,7 @@ const CreateProject = () => {
               id="linkedin"
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block max-w-[100px] p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500"
               placeholder="linkedin"
-              required
+              onChange={(e) => setLinkedIn(e.currentTarget.value)}
             />
           </div>
           <div className="inline-flex items-center h-5 gap-2 text-blue-600/40">
@@ -148,7 +214,7 @@ const CreateProject = () => {
               id="discord"
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block max-w-[100px] p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500"
               placeholder="discord"
-              required
+              onChange={(e) => setDiscord(e.currentTarget.value)}
             />
           </div>
         </div>
@@ -178,8 +244,9 @@ const CreateProject = () => {
         </label>
       </div>
       <button
-        type="submit"
         className="text-white bg-teal-700 hover:bg-teal-800 focus:ring-4 focus:outline-none focus:ring-teal-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-teal-600 dark:hover:bg-teal-700 dark:focus:ring-teal-800"
+        disabled={file && name && description && email ? false : true}
+        onClick={async (e) => await create(e)}
       >
         Submit
       </button>
